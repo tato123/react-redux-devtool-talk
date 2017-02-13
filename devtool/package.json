@@ -1,0 +1,24 @@
+{
+  "name": "react-redux-demo-devtool",
+  "version": "1.0.0",
+  "description": "A sample application to demonstrate chrome extensions, react, and redux",
+  "main": "index.js",
+  "scripts": {
+    "test": "tetst"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tato123/react-redux-devtool-talk.git"
+  },
+  "author": "Jonathan Fontanez <fontanezj1@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tato123/react-redux-devtool-talk/issues"
+  },
+  "homepage": "https://github.com/tato123/react-redux-devtool-talk#readme",
+  "dependencies": {
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
+    "redux": "^3.6.0"
+  }
+}
