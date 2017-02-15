@@ -2,11 +2,14 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import {DEVTOOL_NAME} from './constants';
-
+import FormViewer from '../containers/FormViewer';
+import store from '../redux/store';
 
 // react-dom rendering
 render(
-    <h1>Hello world</h1>,
+    <Provider store={store}>
+        <FormViewer />
+    </Provider>,
     document.getElementById('root')
 );
 

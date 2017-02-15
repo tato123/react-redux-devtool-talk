@@ -1,10 +1,23 @@
 import {ADD_ACTION_TYPE} from './actions';
+import { combineReducers } from 'redux';
 
-const initialState = {
-    val: 0
-};
+const initialState = [
+    {
+        fields: [
+            {
+                id: '123'
+            },
+            {
+                id: '3333'
+            },
+            {
+                id: '456'
+            }
+        ]
+    }
+]
 
-const calculatorReducer = (state = initialState, action) => {
+export const forms = (state = initialState, action) => {
     switch (action) {
         case ADD_ACTION_TYPE:
             return Object.assign({}, state, {
@@ -14,3 +27,9 @@ const calculatorReducer = (state = initialState, action) => {
             return state;
     }
 };
+
+const formInspectorApp = combineReducers({
+  forms
+})
+
+export default formInspectorApp
