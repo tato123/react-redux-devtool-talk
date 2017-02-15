@@ -1,23 +1,12 @@
+import {CONTENT_SCRIPT_NAME, DEVTOOL_NAME} from './constants';
 // Devtools backgorund script that coordinates between the
 // actual page and the devtools
 // @see https://developer.chrome.com/extensions/devtools
 
 const connections = {};
-const CONTENT_SCRIPT_NAME = 'form_contentscript';
-const DEVTOOL_NAME = 'form_devtool';
 
-// message handler
-const extensionListener = (message, port, sendResponse) => {
-    // check if we have an output stream and forward the message
-    if (connections[port.sender.tab.id] && connections[port.sender.tab.id].out) {
-        connections[port.sender.tab.id].out.postMessage(message);
-    }
 
-    // save a copy of the current stream
-    if (connections[port.sender.tab.id] && connections[port.sender.tab.id].data) {
-        connections[port.sender.tab.id].data.push(message);
-    }
-};
+
 
 // binds a new runtime listener when connect is called from content script or 
 // from a devtools script
@@ -38,7 +27,7 @@ chrome.runtime.onConnect.addListener((port) => {
         });
     }
 
-    // connect as extension
+    // connect as devtool extension
     if (port.name.indexOf(DEVTOOL_NAME) !== -1) {
         const tabId = port.name.split('-')[1];
         connections[tabId] = Object.assign({}, connections[tabId], {
@@ -50,6 +39,21 @@ chrome.runtime.onConnect.addListener((port) => {
         const out = connections[tabId].out;
         out.postMessage(data);
     }
+
+    // message handler
+    const extensionListener = (message, port, sendResponse) => {
+        // check if we have an output stream and forward the message
+        if (connections[port.sender.tab.id] && connections[port.sender.tab.id].out) {
+            console.log('> Sending message', message);
+            connections[port.sender.tab.id].out.postMessage(message);
+        }
+
+        // save a copy of the current stream
+        if (connections[port.sender.tab.id] && connections[port.sender.tab.id].data) {
+            console.log('< Saving message', message);
+            connections[port.sender.tab.id].data.push(message);
+        }
+    };
 
     // Listen to messages sent from the DevTools page
     port.onMessage.addListener(extensionListener);

@@ -3,24 +3,29 @@ const {resolve} = require('path');
 
 module.exports = function (env) {
     return {
-        devtool: 'inline-source-map',
-        context: resolve(__dirname, '.'),
+        context: resolve(__dirname, './devtool'),
         entry: {
             devtools: './src/chrome/devtools.js',
             background: './src/chrome/background.js',
             contentScript: './src/chrome/contentScript.js',
             panel: './src/chrome/panel.js',
-            vendor: ['react', 'react-redux', 'redux', 'react-dom']            
+            fe_libs: ['react', 'react-redux', 'redux', 'react-dom']
         },
         output: {
-            path: resolve(__dirname, './src/build'),
+            path: resolve(__dirname, './devtool/src/build'),
             filename: '[name].js'
         },
         plugins: [
             new webpack.NamedModulesPlugin(),
             new webpack.optimize.CommonsChunkPlugin({
-                name: ['vendor'],
-                minChunks: Infinity
+                name: 'fe_libs',
+                filename: 'fe_libs.js',
+                minChunks: Infinity                
+            }),
+            new webpack.optimize.CommonsChunkPlugin({
+                name: 'bs_libs',
+                filename: 'bs_libs.js',
+                minChunks: Infinity                
             }),
             new webpack.DefinePlugin({
                 'process.env': {

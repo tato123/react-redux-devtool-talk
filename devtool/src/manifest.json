@@ -3,16 +3,15 @@
     "description": "Displays form elements and ",
     "manifest_version": 2,
     "version": "1.0.0",
-    "devtools_page": "devtools.html",
+    "devtools_page": "devtools_bootstrap.html",
     "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
     "web_accessible_resources": [
-        "main.html",
-        "panel.html",
-        "src/**/*.html",
+        "devtools_tab.html",
         "build/*"
     ],
     "background": {
         "scripts": [
+            "build/bs_libs.js",
             "build/background.js"
         ],
         "persistent": true
@@ -25,8 +24,7 @@
     "content_scripts": [
         {
             "matches": ["<all_urls>"],
-            "js": ["build/contentScript.js"],
-            "run_at": "document_start"
+            "js": ["build/bs_libs.js", "build/contentScript.js"]
         }
     ]
 }
