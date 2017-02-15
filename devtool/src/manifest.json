@@ -13,25 +13,19 @@
     ],
     "background": {
         "scripts": [
-            "chrome/background.js"
+            "build/background.js"
         ],
         "persistent": true
     },
     "permissions": [
         "<all_urls>",
         "webNavigation",
-        "tabs",
-        "storage",
-        "unlimitedStorage"
+        "tabs"        
     ],
     "content_scripts": [
         {
-            "matches": [
-                "<all_urls>"
-            ],
-            "js": [
-                "chrome/contentScript.js"
-            ],
+            "matches": ["<all_urls>"],
+            "js": ["build/contentScript.js"],
             "run_at": "document_start"
         }
     ]
