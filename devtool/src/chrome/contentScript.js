@@ -1,21 +1,26 @@
 import {CONTENT_SCRIPT_NAME} from './constants';
+import {addForm, addFormField, updateFormFieldValue} from '../redux/actions'; 
 
 const port = chrome.runtime.connect({name: CONTENT_SCRIPT_NAME});
 
-function instrumentField(evt) {
-    sendMessageToBackgroundScript({
-        type: 'FORM_FIELD_CHANGE',
-        payload: {
-            id: evt.currentTarget.id,
-            type: evt.currentTarget.tagName.toLowerCase(),
-            value: evt.currentTarget.value
-        }
-    });
-}
-
 function findFormNodes () {
-    document.querySelectorAll('form button').forEach(b=> b.addEventListener('click', instrumentField));
-    document.querySelectorAll('form input').forEach(i=> i.addEventListener('input', instrumentField));
+    // get the first form 
+    const form = document.querySelector('form');
+    sendMessageToBackgroundScript(addForm(form.id));
+
+    // instrument the fields
+    const instrumentField = (evt) => {
+        sendMessageToBackgroundScript(updateFormFieldValue(form.id, evt.currentTarget.id, evt.currentTarget.value));
+    }
+
+    form.querySelectorAll('button').forEach(b=> {
+        sendMessageToBackgroundScript(addFormField(form.id, b.id));
+        b.addEventListener('click', instrumentField)
+    });
+    form.querySelectorAll('input').forEach(i=> {
+        sendMessageToBackgroundScript(addFormField(form.id, i.id));
+        i.addEventListener('input', instrumentField)
+    });
 }
 
 function sendMessageToBackgroundScript(message) {

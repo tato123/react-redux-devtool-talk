@@ -11,8 +11,7 @@ export const forms = (state = [], action) => {
                     fields: []
                 }
             ];
-        case ADD_FORM_FIELD:
-            
+        case ADD_FORM_FIELD:            
             return state.map(form => {                    
                     if (form.id === action.payload.formId) {
                         form.fields = [...form.fields, { id: action.payload.fieldId }];
